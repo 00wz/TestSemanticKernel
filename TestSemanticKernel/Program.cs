@@ -11,10 +11,9 @@ namespace TestSemanticKernel
     {
         static async Task Main(string[] args)
         {
-            // Set console encoding to UTF-8 for correct Unicode (including Russian) support
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.InputEncoding = Encoding.UTF8;
-
+            // Ensure Windows console uses UTF-8 code page for proper input/output of Cyrillic
+            ConsoleEncoding.UseUtf8();
+            
             // Explicitly load .env from build (output/bin) directory
             var envPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".env");
             DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { envPath }, overwriteExistingVars: true));
