@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.67.1" />
   </ItemGroup>
 
+  <!-- Exclude diagnostic handler (no longer used) from compilation -->
+  <ItemGroup>
+    <Compile Remove="LoggingHttpHandler.cs" />
+  </ItemGroup>
+
 </Project>
