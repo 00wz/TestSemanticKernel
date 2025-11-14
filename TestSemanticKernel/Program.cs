@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 using dotenv.net;
 using System.IO;
 using System.Text;
+using DigitalAssistant.SmartTwinMcp.Controllers;
 
 namespace TestSemanticKernel
 {
@@ -28,6 +29,8 @@ namespace TestSemanticKernel
 
             // Register tools (WeatherTool)
             kernel.Plugins.AddFromType<WeatherTool>();
+            // Register tools (SmartTwinController)
+            kernel.Plugins.AddFromType<SmartTwinController>();
 
             // Diagnostic: print all registered functions
             Console.WriteLine("Registered functions:");

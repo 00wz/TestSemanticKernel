@@ -6,7 +6,7 @@ namespace TestSemanticKernel
 {
     public class WeatherTool
     {
-        [KernelFunction("getWeather")]
+        [KernelFunction]
         [Description("Get the current weather in the specified city")]
         public Task<string> GetWeatherAsync(
             [Description("The name of the city to get the weather for")] string city)
