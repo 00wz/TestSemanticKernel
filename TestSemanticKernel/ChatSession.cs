@@ -21,7 +21,7 @@ namespace TestSemanticKernel
             Console.WriteLine("AI chat. Type 'exit' to quit.");
             var chatService = _kernel.GetRequiredService<IChatCompletionService>();
 
-            // Enable function calling for OpenAI-compatible models
+            // Включаем авто-вызов функций для OpenAI-совместимых моделей
             var executionSettings = new OpenAIPromptExecutionSettings
             {
                 FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
@@ -34,20 +34,40 @@ namespace TestSemanticKernel
                 if (userInput == null || userInput.Trim().ToLower() == "exit")
                     break;
 
-                // Add user message to history
+                // Добавляем сообщение пользователя в историю
                 _history.AddUserMessage(userInput);
 
-                // Get AI response with function calling enabled
-                var aiMessage = (await chatService.GetChatMessageContentAsync(
-                    _history,
-                    executionSettings: executionSettings,
-                    kernel: _kernel
-                )).Content?.Trim();
+                // Потоковая генерация ответа с немедленным выводом токенов
+                Console.Write("AI: ");
+                var sb = new System.Text.StringBuilder();
 
-                if (!string.IsNullOrEmpty(aiMessage))
+                try
                 {
-                    Console.WriteLine($"AI: {aiMessage}");
-                    _history.AddAssistantMessage(aiMessage);
+                    await foreach (var update in chatService.GetStreamingChatMessageContentsAsync(
+                        _history,
+                        executionSettings: executionSettings,
+                        kernel: _kernel))
+                    {
+                        var token = update.Content;
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            sb.Append(token);
+                            Console.Write(token);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"[streaming error] {ex.Message}");
+                }
+
+                Console.WriteLine();
+
+                var finalMessage = sb.ToString().Trim();
+                if (!string.IsNullOrEmpty(finalMessage))
+                {
+                    _history.AddAssistantMessage(finalMessage);
                 }
                 else
                 {
