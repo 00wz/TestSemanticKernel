@@ -10,11 +10,18 @@
   <ItemGroup>
     <PackageReference Include="dotenv.net" Version="4.0.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.67.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.67.1" />
   </ItemGroup>
 
   <!-- Exclude diagnostic handler (no longer used) from compilation -->
   <ItemGroup>
     <Compile Remove="LoggingHttpHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="VMTPSpec.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
