@@ -23,10 +23,10 @@ public class SmartTwinController
     /// <returns>Коллекция свойств объекта</returns>
     [HttpGet]
     [KernelFunction]
-    [Description("Поиск объектов по имени")]
+    [Description("Search for objects by name")]
     public async Task<IReadOnlyCollection<VMTPBaseObjectResponseItem>> SearchObject(
-        [Description("Имя объекта")] string name, 
-        [Description("Идентификатор слоя (если есть)")] Guid? layerId = null)
+        [Description("Object name")] string name, 
+        [Description("Layer ID (if any)")] Guid? layerId = null)
     {
         using var http = new HttpClient();
 
